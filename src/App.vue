@@ -1,7 +1,9 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <!-- <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/page1">Page1</router-link>  -->
+      <img src="../public/header_logo.png" alt="">
   </nav>
   <router-view/>
 </template>
