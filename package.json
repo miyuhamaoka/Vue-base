@@ -5,11 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "mock": "vue-cli-service serve --mode mock"
   },
   "dependencies": {
+    "axios": "^1.1.3",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
+    "vue-axios": "^3.5.2",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.3"
   },
@@ -24,8 +27,14 @@
     "@vue/eslint-config-typescript": "^9.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "json-server": "^0.17.1",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
     "typescript": "~4.5.5"
+  },
+  "rules": {
+    "vue/multi-word-component-names": 0,
+    "no-console": "off",
+    "no-unused-vars": "off"
   }
 }

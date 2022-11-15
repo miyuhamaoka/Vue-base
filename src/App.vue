@@ -1,12 +1,18 @@
 <template>
-  <nav>
-    <!-- <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/page1">Page1</router-link>  -->
-      <img src="../public/header_logo.png" alt="">
-  </nav>
-  <router-view/>
+
+  <HeaderMenu />
+  <router-view />
 </template>
+
+<script lang="ts">
+//ヘッダー
+import HeaderMenu from "@/components/Header.vue";
+
+export default {
+  name:'app',
+  components: { HeaderMenu },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -17,7 +23,7 @@
   color: #2c3e50;
 }
 
-nav {
+div {
   padding: 30px;
 
   a {
