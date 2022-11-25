@@ -1,17 +1,14 @@
 <template>
-  <header>
-    <div>
-      <router-link to="/">
-      <img alt="coffee logo" src="../assets/header_logo.png" />
+  <header class="header">
+    <router-link to="/">
+      <img alt="coffee logo" src="../assets/header_logo.png" class="logo" />
     </router-link>
+    <div class="link">
       <router-link to="/pages/cart">ショッピングカート</router-link> |
       <router-link to="/users/register_new">新規登録</router-link> |
       <router-link to="/users/login">ログイン</router-link> |
       <router-link to="/users/logout">ログアウト</router-link>
     </div>
-
-    <!-- <router-link to="/about">About</router-link> |
-    <router-link to="/page1">Page1</router-link> -->
   </header>
 </template>
 
@@ -41,24 +38,14 @@ export default {
   background-position: left 0 bottom 7px;
   font-family: "Kosugi Maru", sans-serif;
 }
-
 .logo {
   padding: 13px;
   align-items: center;
 }
-
 .link {
+  text-align: left;
   margin-left: auto;
   list-style: none;
   display: flex;
-}
-
-.link > li {
-  margin-top: 25px;
-  padding: 8px;
-}
-
-#loginneed {
-  color: red;
 }
 </style>

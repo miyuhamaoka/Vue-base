@@ -15,9 +15,9 @@ const routes = [
     path: '/pages/cart',
     name: 'cart',
     component: () => import(/* webpackChunkName: "about" */ '../views/pages/cart.vue'),
-    meta:{
-      requiresAuth: true  //認証済みの時のみ閲覧可能となるように定義
-    }
+    // meta:{
+    //   requiresAuth: true  認証済みの時のみ閲覧可能となるように定義
+    // }
   },
   {
     path: '/users/register_new',
@@ -33,7 +33,17 @@ const routes = [
     path: '/users/logout',
     name: 'logout',
     component: () => import(/* webpackChunkName: "about" */ '../views/users/logout.vue')
-  }
+  },
+  {
+    path: '/pages/details/:id',
+    name: 'details',
+    component: () => import(/* webpackChunkName: "about" */ '../views/pages/details.vue')
+  },
+  // {
+  //   path: '/',
+  //   name: '',
+  //   component: () => import(/* webpackChunkName: "about" */ '../.vue')
+  // },
 ]
 
 const router = createRouter({

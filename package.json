@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "mock": "vue-cli-service serve --mode mock"
+    "mock": "vue-cli-service serve --mode mock",
+    "mock-api": "json-server --watch data/db.json --post 8000"
   },
   "dependencies": {
     "axios": "^1.1.3",
