@@ -2,8 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // import HomeView from '../views/HomeView.vue'
 import ItemsTop from '../views/WelcomeCoffee.vue'
 // import Home from './views/Home.vue'
-// import Login from '../views/users/Login'
-// import Register_new from '../views/users/register_new'
+import Login from '../views/users/login.vue'
+import Register_new from '../views/users/register_new.vue'
 
 const routes = [
   {
@@ -22,12 +22,14 @@ const routes = [
   {
     path: '/users/register_new',
     name: 'register_new',
-    component: () => import(/* webpackChunkName: "about" */ '../views/users/register_new.vue')
+    component: Register_new
+    // component: () => import(/* webpackChunkName: "about" */ '../views/users/register_new.vue')
   },
   {
     path: '/users/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/users/login.vue')
+    component: Login
+    // component: () => import(/* webpackChunkName: "about" */ '../views/users/login.vue')
   },
   {
     path: '/users/logout',

@@ -36,6 +36,13 @@ export default class WelcomeCoffee extends Vue {
       items: [],
     };
   }
+  created(){
+    axios.get("")
+    .then(responce=>{
+      this.items = responce.data.documents;
+    console.log(responce.data.documents);
+    });
+  }
   mounted() {
     axios
       .get("http://localhost:3000/items")
