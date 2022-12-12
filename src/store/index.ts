@@ -19,14 +19,14 @@ export const store = createStore({
       },
     },
     actions: {
-      setLoginUser({ commit }: any, user: any) {
+      async setLoginUser({ commit }: any, user: any) {
         commit("setLoginUser", user); //mutationのログイン情報登録を呼び出し
       },
-      login() {
+      async login() {
         const google_auth_provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithRedirect(google_auth_provider);
       },
-      logout() {
+      async logout() {
         firebase.auth().signOut();
       },
       deleteLoginUser({ commit }: any) {
@@ -40,11 +40,7 @@ export const store = createStore({
 //       count: 0,
 //     };
 //   },
-//   mutations: {
-//     increment(state: any) {
-//       state.count++;
-//     },
-//   },
+
 });
 
 // storeは データを入れるためのところ

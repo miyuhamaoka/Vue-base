@@ -4,12 +4,13 @@ import router from "./router";
 import axios from "axios";
 import VueAxios from "vue-axios";
 
+import firebase from "firebase/compat";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {store} from './store'
 import {mapGetters,mapMutations} from 'vuex'
 
-axios.defaults.baseURL="https://firestore.googleapis.com/v1/projects/[PROJECT_ID]/databases/(default)/documents";
+// axios.defaults.baseURL="https://firestore.googleapis.com/v1/projects/[PROJECT_ID]/databases/(default)/documents";
 
 
 const firebaseConfig = {
@@ -21,6 +22,8 @@ const firebaseConfig = {
   appId: "1:357755468027:web:59fae83357e6dacd7a185e",
   measurementId: "G-HC54JS91DR",
 };
+
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 

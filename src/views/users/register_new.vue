@@ -8,7 +8,7 @@
         type="text"
         name="name"
         id="name"
-        placeholder="名前"
+        placeholder="name"
         v-model="name"
       />
       <br />
@@ -18,7 +18,7 @@
         type="text"
         name="email"
         id="email"
-        placeholder="メールアドレス"
+        placeholder="~@~"
         v-model="email"
       />
       <br />
@@ -28,7 +28,7 @@
         type="text"
         name="zipcode"
         id="zipcode"
-        placeholder="郵便番号"
+        placeholder="000-0000"
         v-model="zipcode"
       />
       <br />
@@ -38,7 +38,7 @@
         type="text"
         name="prefecture"
         id="prefecture"
-        placeholder="住所"
+        placeholder="adress"
         v-model="prefecture"
       />
       <br />
@@ -48,32 +48,37 @@
         type="text"
         name="telephone"
         id="tel"
-        placeholder="電話番号"
+        placeholder="telephone number"
         v-model="tel"
       />
       <br />
 
+      <span :class="iconType" @click="onClick"></span>
       <label for="pass">パスワード:</label>
       <input
-        type="pass"
+        :type="pass"
         name="password"
         id="pass"
-        placeholder="パスワード"
+        placeholder="More than 6 characters"
         v-model="pass"
+        class="input"
       />
+      
       <br />
 
+      <span :class="iconType" @click="onClick"></span>
       <label for="confirmPass">確認用パスワード:</label>
       <input
-        type="pass"
+        :type="pass"
         name="confirmationPassword"
-        id="confirmPass"
-        placeholder="確認用パスワード"
+        id="pass"
+        placeholder="Same password"
         v-model="confirmpass"
+        class="input"
       />
       <br />
       <p>
-        <button @click="register">Submit</button>
+        <button @click="register_new">Submit</button>
       </p>
       <p>
         <button @click="signInWithGoogle">Sign In With Google</button>
@@ -84,37 +89,39 @@
 
 
 <script>
+
 import { ref } from "vue";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,} from "firebase/auth";
 import { useRouter } from "vue-router";
 
-// const email = ref("")
-// const password = ref("")
-// const router = useRouter()
+const email = ref("")
+const password = ref("")
+const router = useRouter()
 
-// const register = () => {
-//   const auth = getAuth() //from firebase/auth
-//   createUserWithEmailAndPassword(getAuth(),email.value,password.value)
-//   .then((data) => {
-//     console.log("Successfully registered!")
-//     console.log(auth.currentUser)
-//     router.push("/")
-//   })
-//   .catch((error) =>{
-//     console.log(error.code)
-//     alert(error.message)
-//   })
-// }
-// const signInWithGoogle = () => {
+const register = () => {
+  const auth = getAuth() //from firebase/auth
+  createUserWithEmailAndPassword(getAuth(),email.value,password.value)
+  .then((data) => {
+    console.log("Successfully registered!")
+    console.log(auth.currentUser)
+    router.push("/")
+  })
+  .catch((error) =>{
+    console.log(error.code)
+    alert(error.message)
+  })
+}
+const signInWithGoogle = () => {
+  return
 
-// }
+}
 
-// import { User } from "../../../types";
-// import axios from "../../axios-auth";
+import { User } from "../../../types";
+import axios from "../../axios-auth";
 
 
 export default {
-  name: "register",
+  name: "register_new",
   data() {
     return {
       id: 0,
@@ -128,25 +135,36 @@ export default {
     };
   },
 
-  methods: {
-    register() {
-      const auth = getAuth();
-      createUserWithEmailAndPassword(getAuth()) // <= email.value,password.value
-        .then((userCredential) => {
-          //Signed in
-          const user = userCredential.user;
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-        });
-      signOut(auth)
-        .then(() => {
-          //Sign-out successful
-        })
-        .catch((error) => {
-          //An error happened
-        });
+  // password目隠し
+  // methods:{
+  //   onClick: function(){
+  //     this.isChecked = !this.isChecked;
+  //   }
+  // },
+  // computed: {
+  //   pass: function(){
+  //     return this.isChecked ? "text" : "password";
+  //   }
+  // }
+  // methods: {
+  //   register() {
+  //     const auth = getAuth();
+  //     createUserWithEmailAndPassword(getAuth()) // <= email.value,password.value
+  //       .then((userCredential) => {
+  //         //Signed in
+  //         const user = userCredential.user;
+  //       })
+  //       .catch((error) => {
+  //         const errorCode = error.code;
+  //         const errorMessage = error.message;
+  //       });
+  //     signOut(auth)
+  //       .then(() => {
+  //         //Sign-out successful
+  //       })
+  //       .catch((error) => {
+  //         //An error happened
+  //       });
 
       // axios.post(
       //   '/accounts:signUp?key=[AIzaSyB-qv8KlWZqVR_NA-_O11-HVM2OcpRLSVs]',
@@ -161,26 +179,8 @@ export default {
       //   }).then(responce=>{
       //     console.log(responce);
       //   })
-        this.$router.push("users/login")
-    },
-
-    async registerData() {
-      await fetch("http://localhost:3000/users", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: this.name,
-          email: this.email,
-          zipcode: this.zipcode,
-          adress: this.prefecture,
-          telephone: this.telephone,
-          password: this.password,
-        }),
-      });
-      this.$router.push("/users/login");
-    },
-  },
-};
+    //     this.$router.push("users/login")
+    }
+//   }
+// };
 </script>
