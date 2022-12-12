@@ -1,7 +1,8 @@
 <template>
-  <h1>ログイン</h1>
   <div class="login">
     <div class="form-item">
+      <h2 class="login-header">Login Page</h2>
+      <p>
       <input
         id="email"
         type="text"
@@ -10,18 +11,19 @@
         :rules="emailRules"
         required
       />
+    </p>
     </div>
-    <div class="login">
-      <div class="form-item">
+<p>
         <input
           id="password"
           type="text"
           placeholder="Password"
           v-model="password"
         />
+      </p>
         <!-- <p v-if="errMsg">{{errMsg}}</p> -->
       </div>
-      <br />
+
 
       <button
         class="login-btn"
@@ -29,18 +31,18 @@
         color="success"
         :disabled="isValid"
       >
-        ログイン
+        Login
       </button>
       <!-- <button @click="logout">ログアウト</button> -->
       <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
       <p>
         <router-link to="/users/register_new">ユーザー登録はこちら</router-link>
       </p>
-    </div>
-  </div>
+
 </template>
 
-const regex = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+const regex =
+/^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 <script>
 import firebase from "@/main";
 
@@ -59,14 +61,14 @@ export default {
       errorMessage: "",
     };
   },
-  computed:{
-    isValid(){
+  computed: {
+    isValid() {
       console.log("isValid:", this.valid);
-      return !this.valid  //validがtrueの時はfalseを返す
-    }
+      return !this.valid; //validがtrueの時はfalseを返す
+    },
   },
   methods: {
-    validate(){
+    validate() {
       this.$refs.form.validate();
     },
     submit() {
@@ -76,7 +78,7 @@ export default {
         .signInWithEmailAndPassword(this.email, this.password)
         .then((result) => {
           console.log("success");
-          console.log("user:", result.user)
+          console.log("user:", result.user);
 
           // const auth = {
           //   name: result.user.name,
@@ -89,7 +91,7 @@ export default {
         })
         .catch((error) => {
           console.log("fail:", error);
-          alert("ログインに失敗しました")
+          alert("ログインに失敗しました");
           this.errorMessage = "ログインに失敗しました";
         });
     },
