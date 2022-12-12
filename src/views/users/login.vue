@@ -1,44 +1,33 @@
 <template>
   <div class="login">
-    <div class="form-item">
-      <h2 class="login-header">Login Page</h2>
+    <div class="login-triangle"></div>
+    <h2 class="login-header">Login Page</h2>
+    <form class="login-container">
       <p>
-      <input
-        id="email"
-        type="text"
-        placeholder="Email address"
-        v-model="email"
-        :rules="emailRules"
-        required
-      />
-    </p>
-    </div>
-<p>
         <input
-          id="password"
-          type="text"
-          placeholder="Password"
-          v-model="password"
-        />
+          type="email"
+          v-model="email"
+          placeholder="Email address"
+          pattern="/^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/"
+          autofocus
+          required/>
       </p>
-        <!-- <p v-if="errMsg">{{errMsg}}</p> -->
-      </div>
-
-
-      <button
-        class="login-btn"
-        @click="submit"
-        color="success"
-        :disabled="isValid"
-      >
-        Login
-      </button>
-      <!-- <button @click="logout">ログアウト</button> -->
-      <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
       <p>
-        <router-link to="/users/register_new">ユーザー登録はこちら</router-link>
+        <input 
+        type="password" 
+        v-model="password" 
+        placeholder="Password" 
+        pattern="[a-zA-Z0-9._%+-]{8, 15}"
+        required/>
       </p>
-
+      <p>
+        <input 
+        type="submit" 
+        value="Login" 
+        @click="submit" />
+      </p>
+    </form>
+  </div>
 </template>
 
 const regex =

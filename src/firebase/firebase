@@ -4,7 +4,7 @@ import "firebase/auth"
 // import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 // import {store} from './store'
-import {mapGetters,mapMutations} from 'vuex'
+// import {mapGetters,mapMutations} from 'vuex'
 
 
 const firebaseConfig = {
