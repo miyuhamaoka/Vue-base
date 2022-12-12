@@ -2,18 +2,37 @@
   <h1>ログイン</h1>
   <div class="login">
     <div class="form-item">
-      <input id="email" type="text" placeholder="Email address" v-model="email" />
+      <input
+        id="email"
+        type="text"
+        placeholder="Email address"
+        v-model="email"
+        :rules="emailRules"
+        required
+      />
     </div>
     <div class="login">
       <div class="form-item">
         <input
-          id="password" type="text" placeholder="Password" v-model="password" />
-          <!-- <p v-if="errMsg">{{errMsg}}</p> -->
+          id="password"
+          type="text"
+          placeholder="Password"
+          v-model="password"
+        />
+        <!-- <p v-if="errMsg">{{errMsg}}</p> -->
       </div>
       <br />
 
-      <button @click="login">ログイン</button>
+      <button
+        class="login-btn"
+        @click="submit"
+        color="success"
+        :disabled="isValid"
+      >
+        ログイン
+      </button>
       <!-- <button @click="logout">ログアウト</button> -->
+      <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
       <p>
         <router-link to="/users/register_new">ユーザー登録はこちら</router-link>
       </p>
@@ -21,7 +40,64 @@
   </div>
 </template>
 
-<script lang="ts"> //lang="ts"書いたらエラー消えた(なんで)
+const regex = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+<script>
+import firebase from "@/main";
+
+export default {
+  data() {
+    return {
+      valid: true,
+      name: "",
+      email: "",
+      // emailRules: [
+      //   (v) => !!v || "メールアドレスを入力してください",
+      //   (v) => /.+@.+\..+/.test(v) || "メールアドレスが不正です",
+      // ],
+      password: "",
+      message: "",
+      errorMessage: "",
+    };
+  },
+  computed:{
+    isValid(){
+      console.log("isValid:", this.valid);
+      return !this.valid  //validがtrueの時はfalseを返す
+    }
+  },
+  methods: {
+    validate(){
+      this.$refs.form.validate();
+    },
+    submit() {
+      console.log("login call");
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then((result) => {
+          console.log("success");
+          console.log("user:", result.user)
+
+          // const auth = {
+          //   name: result.user.name,
+          //   email: result.user.email,
+          //   password: result.user.password,
+          // };
+          // sessionStorage.setItem("user", JSON.stringify(auth));
+
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log("fail:", error);
+          alert("ログインに失敗しました")
+          this.errorMessage = "ログインに失敗しました";
+        });
+    },
+  },
+};
+</script>
+
+<!-- <script lang="ts"> //lang="ts"書いたらエラー消えた(なんで)
 // import { mapActions } from 'vuex';
 import firebase from "firebase/compat";
 // import {auth} from "./main.ts"
@@ -89,4 +165,4 @@ export default{
   }
 }
 
-</script>
+</script> -->

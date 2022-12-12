@@ -78,109 +78,66 @@
       />
       <br />
       <p>
-        <button @click="register_new">Submit</button>
-      </p>
-      <p>
-        <button @click="signInWithGoogle">Sign In With Google</button>
+        <button @click="submit">Submit</button>
       </p>
     </fieldset>
   </form>
 </template>
 
-
 <script>
-
-import { ref } from "vue";
-import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,} from "firebase/auth";
-import { useRouter } from "vue-router";
-
-const email = ref("")
-const password = ref("")
-const router = useRouter()
-
-const register = () => {
-  const auth = getAuth() //from firebase/auth
-  createUserWithEmailAndPassword(getAuth(),email.value,password.value)
-  .then((data) => {
-    console.log("Successfully registered!")
-    console.log(auth.currentUser)
-    router.push("/")
-  })
-  .catch((error) =>{
-    console.log(error.code)
-    alert(error.message)
-  })
-}
-const signInWithGoogle = () => {
-  return
-
-}
-
-import { User } from "../../../types";
-import axios from "../../axios-auth";
+import firebase from "@/main"
 
 
 export default {
-  name: "register_new",
   data() {
     return {
-      id: 0,
+      valid: true,
       name: "",
       email: "",
-      zipcode: "",
-      prefecture: "",
-      telephone: "",
+      // emailRules: [
+      //   (v) => !!v || "メールアドレスを入力してください",
+      //   (v) => /.+@.+\..+/.test(v) || "メールアドレスが不正です",
+      // ],
       password: "",
-      confirmationPassword: "",
+      message: "",
+      errorMessage: "",
     };
   },
-
-  // password目隠し
-  // methods:{
-  //   onClick: function(){
-  //     this.isChecked = !this.isChecked;
-  //   }
-  // },
-  // computed: {
-  //   pass: function(){
-  //     return this.isChecked ? "text" : "password";
-  //   }
-  // }
-  // methods: {
-  //   register() {
-  //     const auth = getAuth();
-  //     createUserWithEmailAndPassword(getAuth()) // <= email.value,password.value
-  //       .then((userCredential) => {
-  //         //Signed in
-  //         const user = userCredential.user;
-  //       })
-  //       .catch((error) => {
-  //         const errorCode = error.code;
-  //         const errorMessage = error.message;
-  //       });
-  //     signOut(auth)
-  //       .then(() => {
-  //         //Sign-out successful
-  //       })
-  //       .catch((error) => {
-  //         //An error happened
-  //       });
-
-      // axios.post(
-      //   '/accounts:signUp?key=[AIzaSyB-qv8KlWZqVR_NA-_O11-HVM2OcpRLSVs]',
-      //   {
-      //     name: this.name,
-      //     email: this.email,
-      //     zipcode: this.zipcode,
-      //     adress: this.prefecture,
-      //     telephone: this.telephone,
-      //     password: this.password,
-      //     returnSecureToken:true
-      //   }).then(responce=>{
-      //     console.log(responce);
-      //   })
-    //     this.$router.push("users/login")
+  computed:{
+    isValid(){
+      console.log("isValid:", this.valid);
+      return !this.valid  //validがtrueの時はfalseを返す
     }
-//   }
-// };
+  },
+  methods: {
+    validate(){
+      this.$refs.form.validate();
+    },
+    submit() {
+      console.log("registernew call");
+      firebase.auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(async(result) => {
+          console.log("success:", result);
+          // await result.user.updateProfile{{displayName: this.name}}
+          console.log("update user:", result.user)
+
+          // const auth = {
+          //   name: result.user.name,
+          //   email: result.user.email,
+          //   password: result.user.password,
+          // };
+          // sessionStorage.setItem("user", JSON.stringify(auth));
+
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.log("fail:", error);
+          // alert("ログインに失敗しました")
+          // this.errorMessage = "ログインに失敗しました";
+        });
+    },
+  },
+};
+
 </script>
