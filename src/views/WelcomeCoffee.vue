@@ -1,17 +1,10 @@
 <template>
   <div class="toppage">
     <title>商品一覧</title>
-    <h1>商品一覧</h1>
-    <!--     
-    <div v-if="items.length"> -->
+    <h2 class="menu-header">Menu List</h2>
     <div class="itemWrapper">
       <div v-for="item in items" :key="item.id" class="item">
-        <router-link
-          :to="{
-            name: 'details',
-            params: { id: item.id },
-          }"
-        >
+        <router-link :to="{ name: 'cart', query: { item_id: item.id } }">
           <img
             :src="`../../${item.image_path}`"
             alt="{item.name}"
@@ -27,6 +20,50 @@
 </template>
 
 <script>
+import firebase from "@/firebase/firebase";
+
+export default {
+  data() {
+    return {
+      items: [],
+    };
+  },
+
+  mounted() {
+    this.getItems();
+    // const itemRef = firebase.firestore().collection("items").doc(this.id)
+  },
+  methods: {
+    async getItems() {
+      console.log("getItemコール");
+      //呼び出すたびに追加にならないよう、データを初期化してから配列に詰める
+      this.items = [];
+
+      const itemRef = firebase.firestore().collection("items");
+      const snapshot = await itemRef.get();
+      console.log("snapshot:", snapshot);
+      snapshot.forEach((doc) => {
+        // const data = {
+        //   name: doc.data().name,
+        //   price: doc.data().price,
+        //   type: doc.data().type,
+        //   image_path: doc.data().image_path,
+        //   description: doc.data().description,
+        //   deleted: doc.data().deleted,
+        // };
+        const data = { ...doc.data() };
+        data.id = doc.id;
+        console.log("データ:", data);
+        
+        this.items.push(data);
+        console.log(this.items)
+      });
+    },
+  },
+};
+</script>
+
+<!-- <script>
 import axios from "axios";
 import { Vue } from "vue-class-component";
 
@@ -55,7 +92,7 @@ export default class WelcomeCoffee extends Vue {
       .catch((error) => console.log("fail:",error.message));
   }
 }
-</script>
+</script> -->
 
 <style>
 .itemWrapper {
