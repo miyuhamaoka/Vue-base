@@ -26,14 +26,14 @@
         value="Login" 
         @click="submit" />
       </p>
+      <p v-if="message" >{{message}}</p>
+      <p v-if="errorMessage" >{{errorMessage}}</p>
     </form>
   </div>
 </template>
 
-const regex =
-/^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 <script>
-import firebase from "@/main";
+import firebase from "@/firebase/firebase";
 
 export default {
   data() {
@@ -49,6 +49,13 @@ export default {
       message: "",
       errorMessage: "",
     };
+  },
+   //新規作成画面で成功したらmessageを表示
+  mounted(){
+    if(localStorage.message){
+      this.message = localStorage.message
+      localStorage.message = ""  //リロードした際に空にする
+    }
   },
   computed: {
     isValid() {
@@ -66,15 +73,17 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then((result) => {
-          console.log("success");
+          console.log("サクセス");
           console.log("user:", result.user);
 
-          // const auth = {
-          //   name: result.user.name,
-          //   email: result.user.email,
-          //   password: result.user.password,
-          // };
-          // sessionStorage.setItem("user", JSON.stringify(auth));
+          // ログインしたuser情報をsettionのsetItemに保存
+          const auth = {
+            displayName: result.user.displayName,
+            email: result.user.email,
+            uid: result.user.uid,
+            refreshToken: result.user.refreshToken
+          }
+          sessionStorage.setItem("user", JSON.stringify(auth));
 
           this.$router.push("/");
         })
@@ -87,6 +96,17 @@ export default {
   },
 };
 </script>
+
+<style>
+.error-message {
+  font-size: 12px;
+  color: red;
+  display: none;
+}
+input:invalid + .error-message {
+  display: block;
+}
+</style>
 
 <!-- <script lang="ts"> //lang="ts"書いたらエラー消えた(なんで)
 // import { mapActions } from 'vuex';

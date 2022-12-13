@@ -64,11 +64,13 @@ export default {
           // displayNameがnullなのでnameを代入
           await result.user.updateProfile({ displayName: this.name });
           console.log("アップデートユーザー:", result.user);
+          //ローカルメッセージに保管
+          localStorage.message = "新規作成に成功しました"
 
           this.$router.push("/users/login");
         })
-        .catch((err) => {
-          console.log("エラーー", err);
+        .catch((error) => {
+          console.log("エラーー", error);
           alert("ユーザーの新規作成に失敗しました");
           this.errorMessage = "ユーザーの新規作成に失敗しました"
         });

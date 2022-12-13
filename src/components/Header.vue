@@ -3,21 +3,49 @@
     <router-link to="/">
       <img alt="coffee logo" src="../assets/header_logo.png" class="logo" />
     </router-link>
+    <!-- ログインしていればユーザー名を表示 -->
+    <div class="username">ようこそ
+      <span>{{ auth && auth.displayName }}様</span></div>
+
     <div class="link">
-      <router-link to="/pages/cart">ショッピングカート</router-link> |
-      <router-link to="/users/register_new">新規登録</router-link> |
-      <router-link to="/users/login">ログイン</router-link> |
-      <router-link to="/users/logout">ログアウト</router-link>
+      <router-link to="/pages/cart">Cart</router-link> |
+      <router-link to="/users/register_new">Sign Up</router-link> |
+      <router-link to="/users/login">Login</router-link>
+      <!-- <router-link to="/users/logout">Logout</router-link> -->
+      <button @click="logout">Logout</button>
+      <!-- <p v-if="successLogout">{{successLogout}}</p> -->
     </div>
   </header>
 </template>
 
 <script>
+import firebase from "@/firebase/firebase";
+
 export default {
-  // name: "site-header",
-  //   data() {
-  //     return {};
-  //   },
+  data() {
+    return {
+      auth: null,
+    };
+  },
+  mounted() {
+    this.auth = JSON.parse(sessionStorage.getItem("user") || ""); //文字列をオブジェクトに変換
+  },
+  methods: {
+    logout() {
+      console.log("ログアウト");
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          // this.successLogout = "ログアウトしました"
+          localStorage.message = "ログアウトしました";
+          this.$router.push("/users/login");
+        })
+        .catch((error) => {
+          console.log("fail:", error);
+        });
+    },
+  },
 };
 </script>
 

@@ -52,7 +52,7 @@ export default class WelcomeCoffee extends Vue {
         console.log(this.items);
       })
       // eslint-disable-next-line no-undef
-      .catch(() => console.log(error.message));
+      .catch((error) => console.log("fail:",error.message));
   }
 }
 </script>
