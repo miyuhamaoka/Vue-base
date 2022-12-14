@@ -1,10 +1,14 @@
 <template>
   <div class="toppage">
     <title>商品一覧</title>
-    <h2 class="menu-header">Menu List</h2>
+    <h2 class="menu-header">MenuList Page</h2>
     <div class="itemWrapper">
       <div v-for="item in items" :key="item.id" class="item">
-        <router-link :to="{ name: 'cart', query: { item_id: item.id } }">
+        <router-link
+          :to="{ name: 'itemDetails', query: { item_id: item.id } }"
+          @click="goDetails"
+        >
+          <!-- @click="goDetails(item.id)" -->
           <img
             :src="`../../${item.image_path}`"
             alt="{item.name}"
@@ -26,12 +30,16 @@ export default {
   data() {
     return {
       items: [],
+      detailsId: "",
+      id: "",
+      name: "",
     };
   },
 
   mounted() {
     this.getItems();
     // const itemRef = firebase.firestore().collection("items").doc(this.id)
+    this.goDetails();
   },
   methods: {
     async getItems() {
@@ -41,7 +49,8 @@ export default {
 
       const itemRef = firebase.firestore().collection("items");
       const snapshot = await itemRef.get();
-      console.log("snapshot:", snapshot);
+      console.log("スナップショット:", snapshot);
+      //データを取得
       snapshot.forEach((doc) => {
         // const data = {
         //   name: doc.data().name,
@@ -54,45 +63,77 @@ export default {
         const data = { ...doc.data() };
         data.id = doc.id;
         console.log("データ:", data);
-        
+
         this.items.push(data);
-        console.log(this.items)
+        console.log(this.items);
       });
+    },
+
+    async goDetails() {
+      console.log("ゴ-詳細:", this.item_id);
+      console.log("これ:", this.items.name);
+
+      const detailRef = firebase.firestore().collection("cartItems");
+
+      // const db = firebase.firestore();
+      // db.collection("cartItems").add({
+      //     // id: this.id,
+      //     // name: this.name,
+      //     items:this.items
+      //   })
+      //   .then((result) => {
+      //     console.log("できた:", result);
+      //     this.body = "";
+      //   })
+      //   .catch((error) => {
+      //     console.log("失敗:", error);
+      //   });
+
+      // this.$router.push({
+      //   name:"Items",
+      //   params:{
+      //     id:this.items.id,
+      //     name:this.items.name,
+      //     description:this.items.description,
+      //     price:this.items.price,
+      //     image_path:this.items.image_oath
+      //   }
+      // })
+
+      // const detailRef = firebase.firestore().collection("items");
+      // const id = await detailRef.doc().id;
+      // console.log("ゲット詳細:", id); //なんのid?
+
+      // const detailRef = firebase.firestore().collection("items")
+      // const snapshot = await detailRef.get()
+      // console.log("ゲット詳細:",snapshot)
+      // snapshot.forEach(doc =>{
+      //   console.log(doc.data())})
+
+      //   const data = {...doc.data()}
+      //   data.id = doc.id
+      //   console.log("データ？",data)
+      // })
+
+      //   const detailRef = firebase.firestore().collection("cartItems").doc(this.detailId);
+      //   detailRef.collection("cart").add({
+      //       item: this.body,
+      //       id: this.auth.id,
+      //       name: this.auth.displayName,
+      //       price: this.auth.price,
+      //       image_path: this.auth.image_path,
+      //     })
+      //     .then((result) => {
+      //       console.log("できた:", result);
+      //       this.body = "";
+      //     })
+      //     .catch((error) => {
+      //       console.log("失敗:", error);
+      //     });
     },
   },
 };
 </script>
-
-<!-- <script>
-import axios from "axios";
-import { Vue } from "vue-class-component";
-
-export default class WelcomeCoffee extends Vue {
-  data() {
-    return {
-      items: [],
-    };
-  }
-  created(){
-    axios.get("")
-    .then(responce=>{
-      this.items = responce.data.documents;
-    console.log(responce.data.documents);
-    });
-  }
-  mounted() {
-    axios
-      .get("http://localhost:3000/items")
-      .then((re) => {
-        this.items = re.data;
-        console.log(re);
-        console.log(this.items);
-      })
-      // eslint-disable-next-line no-undef
-      .catch((error) => console.log("fail:",error.message));
-  }
-}
-</script> -->
 
 <style>
 .itemWrapper {

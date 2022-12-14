@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 // import HomeView from '../views/HomeView.vue'
 import ItemsTop from "../views/WelcomeCoffee.vue";
+import ItemDetails from "../views/pages/itemDetails.vue";
+import Cart from "../views/pages/cart.vue";
 // import Home from './views/Home.vue'
 import Login from "../views/users/login.vue";
 import Register_new from "../views/users/register_new.vue";
@@ -14,10 +16,16 @@ const routes = [
     meta: { requiresAuth: true }, //認証済みの時のみ閲覧可能となるように定義
   },
   {
+    path: "/pages/details",
+    name: "itemDetails",
+    component: ItemDetails,
+  },
+  {
     path: "/pages/cart",
     name: "cart",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/pages/cart.vue"),
+    component: Cart
+    // component: () =>
+    //   import(/* webpackChunkName: "about" */ "../views/pages/cart.vue"),
   },
   {
     path: "/users/register_new",
@@ -37,16 +45,11 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/users/logout.vue"),
   },
-  {
-    path: "/pages/details/:id",
-    name: "details",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/pages/details.vue"),
-  },
   // {
-  //   path: '/',
-  //   name: '',
-  //   component: () => import(/* webpackChunkName: "about" */ '../.vue')
+  //   path: "/pages/details/:id",
+  //   name: "details",
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/pages/details.vue"),
   // },
 ];
 
