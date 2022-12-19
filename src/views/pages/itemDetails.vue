@@ -4,20 +4,22 @@
     <h2 class="menu-header">ItemDetail Page</h2>
     <router-link to="/">-> MenuList Page</router-link>
     <div class="itemWrapper">
-      <div v-for="item in items" :key="item.id" class="item">
+
+      <!-- <div v-for="item in items" :key="item.id" class="item"> -->
         <!-- <router-link
           :to="{ name: 'itemDetails', query: { item_id: item.id } }"
           @click="goDetails"
         > -->
+
         <img
-          :src="`../../${item.image_path}`"
+          :src="`../../${detail.image_path}`"
           alt="{item.name}"
           width="210"
           height="210"
         />
-        <div class="text">{{ item.name }}</div>
-        <div>{{ item.description }}</div>
-        <div>{{ item.price }}円</div>
+        <div class="text">{{ detail.name }}</div>
+        <div>{{ detail.description }}</div>
+        <div>{{ detail.price }}円</div>
       </div>
       <div>
         <div class="select">
@@ -32,13 +34,13 @@
         </div>
         <br />
         <div class="price">
-          <label for="totalPrice">合計金額：{{}}円</label>
+          <label for="totalPrice">合計金額：{{detail.price}}円</label>
         </div>
         <br />
         <button class="btn" @click="submit">{{ addToCart }}</button>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -47,40 +49,65 @@ import firebase from "@/firebase/firebase";
 export default {
   data() {
     return {
+      item:[],
+      detail:[],
+      detailsId:"",
+      total:0,
       addToCart: "Add To Cart",
     };
   },
-  created() {
-    this.detailsId = this.$route.query.item_id;
+  async created() {
+    this.detailsId = this.$route.query["item_id"];
     console.log("詳細:", this.detailsId);
 
-    const detailRef = firebase
-      .firestore()
-      .collection("items")
-      .doc(this.itemsId);
-
+    const detailRef = firebase.firestore().collection("items").doc(this.detailsId);
     console.log("チャットれふ:", detailRef);
+    const snapshot = await detailRef.get();
+    console.log("スナップ:",snapshot)
+
+    this.detail = snapshot.data()
+    console.log("detail[]:",this.detail)
+
+
   },
   mounted() {
-    this.goDetails();
+    // this.goDetails();
+    // this.itemTotal();
   },
   methods: {
-    async goDetails() {
-      console.log("詳細ページ");
+    // async goDetails() {
+    //   console.log("詳細ページ");
 
-      const detailRef = firebase.firestore().collection("items");
-      const snapshot = await detailRef.get();
-      console.log("スナップショッと:", snapshot);
+    //   const detailRef = firebase.firestore().collection("items");
+    //   const snapshot = await detailRef.get();
+    //   console.log("スナップショッと:", snapshot);
 
-      snapshot.forEach((doc) => {
-        // this.items.push(doc.data())
-        console.log("データ:", doc.data());
-      });
-    },
+    //   snapshot.forEach((doc) => {
+    //     // this.items.push(doc.data())
+    //     console.log("データ:", doc.data());
+    //   });
+
+    //   const Item = {
+    //     template: `<div>Item {{ $route.params.id }}</div>`,
+    //   };
+    //   console.log("アイテム:", Item);
+
+    // //   const router = new VueRouter({
+    // //     routes: [{ path: "/pages/details/:id", component: ItemDetails }],
+    // //   });
+    // },
     submit() {
       console.log("カゴに入る");
+
+      this.detail.price = this.total
+      firebase.firestore().collection("cartItems").add(this.detail)
+
       this.$router.push("/pages/cart");
     },
+    // totalPrice(){
+    //   this.total = (this.detail.price)
+    // }
+
   },
 };
 </script>

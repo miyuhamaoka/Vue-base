@@ -33,6 +33,7 @@ export default {
       detailsId: "",
       id: "",
       name: "",
+      data:[]
     };
   },
 
@@ -40,6 +41,7 @@ export default {
     this.getItems();
     // const itemRef = firebase.firestore().collection("items").doc(this.id)
     this.goDetails();
+
   },
   methods: {
     async getItems() {
@@ -65,15 +67,18 @@ export default {
         console.log("データ:", data);
 
         this.items.push(data);
-        console.log(this.items);
+        console.log("get結果",this.items);
       });
     },
 
     async goDetails() {
-      console.log("ゴ-詳細:", this.item_id);
-      console.log("これ:", this.items.name);
+      // console.log("ゴ-詳細:", this.item_id);
+      // console.log("これ:", this.items.name);
 
-      const detailRef = firebase.firestore().collection("cartItems");
+      // const detailRef = firebase.firestore().collection("items").doc("21")
+      const detailRef = firebase.firestore().collection("items")
+      const query = detailRef.where("item_id", "==", "21")
+      console.log("取れたかな:", query);
 
       // const db = firebase.firestore();
       // db.collection("cartItems").add({
