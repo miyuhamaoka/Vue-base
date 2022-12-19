@@ -5,7 +5,7 @@
     </router-link>
     <!-- ログインしていればユーザー名を表示 -->
     <div class="username">ようこそ
-      <span>{{ auth && auth.displayName }}様</span></div>
+      <span>{{authenticatedUser ? auth && auth.displayName : "ゲスト"}}様</span></div>
 
     <div class="link">
       <router-link to="/pages/cart">Cart</router-link> |
@@ -25,17 +25,31 @@ export default {
   data() {
     return {
       auth: null,
+      authenticatedUser:"",
+      toggle:true
     };
   },
+  // mounted() {
+  //   this.authenticatedUser = JSON.parse(sessionStorage.getItem("user") || ""); //文字列をオブジェクトに変換
+  // },
   mounted() {
-    this.auth = JSON.parse(sessionStorage.getItem("user") || ""); //文字列をオブジェクトに変換
+  firebase.auth().onAuthStateChanged((user) => {
+    if(user) {
+      console.log("イン");
+      this.auth = JSON.parse(sessionStorage.getItem("user") || ""); //文字列をオブジェクトに変換
+      this.authenticatedUser = true;
+    } else {
+      console.log("アウト");
+      this.authenticatedUser = false;
+    }
+  })
   },
   methods: {
     logout() {
       console.log("ログアウト");
-      firebase
-        .auth()
-        .signOut()
+      firebase.auth().signOut()
+
+      this.toggle = !this.toggle
         .then(() => {
           // this.successLogout = "ログアウトしました"
           localStorage.message = "ログアウトしました";

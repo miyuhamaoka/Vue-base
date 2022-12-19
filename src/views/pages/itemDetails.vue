@@ -24,7 +24,7 @@
       <div class="select">
         <label for="">数量：</label>
         <select name="quantity" v-model="quantity" @change="foo">
-        <!-- <select name="quantity" v-model="quantity" @change="addQuantity"> -->
+          <!-- <select name="quantity" v-model="quantity" @change="addQuantity"> -->
           <option :value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -34,7 +34,7 @@
       </div>
       <br />
       <div class="price">
-        <label for="totalPrice">合計金額：{{total}}円</label>
+        <label for="totalPrice">合計金額：{{ total }}円</label>
       </div>
       <br />
       <button class="btn" @click="submit">{{ addToCart }}</button>
@@ -51,8 +51,9 @@ export default {
     return {
       item: [],
       detail: [],
-      total:0,
-      val:"",
+      detailsId: "",
+      total: 0,
+      val: "",
       addToCart: "カートに入れる",
     };
   },
@@ -60,10 +61,7 @@ export default {
     this.detailsId = this.$route.query["item_id"];
     console.log("詳細:", this.detailsId);
 
-    const detailRef = firebase
-      .firestore()
-      .collection("items")
-      .doc(this.detailsId);
+    const detailRef = firebase.firestore().collection("items").doc(this.detailsId);
     console.log("チャットれふ:", detailRef);
     const snapshot = await detailRef.get();
     console.log("スナップ:", snapshot);
@@ -72,19 +70,23 @@ export default {
     console.log("detail[]:", this.detail);
   },
   methods: {
-    quantity(){
-      this.total = this.detail.price
+    quantity() {
+      this.total = this.detail.price;
+
+      const quantityRef = firebase.firestore().collection("cartItems")
+      quantityRef.update({
+        quantity:this.val
+      })
     },
     // 合計金額
-    foo:function(e){
-      this.val = e.target.value
-      this.total = this.detail.price * this.val
-
+    foo: function (e) {
+      this.val = e.target.value;
+      this.total = this.detail.price * this.val;
     },
     submit() {
       console.log("カゴに入る");
 
-      // firebase.firestore().collection("cartItems").add(this.detail)
+      firebase.firestore().collection("cartItems").add(this.detail)
       this.$router.push("/pages/cart");
     },
   },

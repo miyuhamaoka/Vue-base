@@ -47,10 +47,17 @@ export default {
   },
   //  新規作成画面で成功したらmessageを表示
   mounted() {
-    if (localStorage.message) {
-      this.message = localStorage.message;
-      localStorage.message = ""; //リロードした際に空にする
-    }
+    // if (localStorage.message) {
+    //   this.message = localStorage.message;
+    //   localStorage.message = ""; //リロードした際に空にする
+    // }
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        console.log("ログイ");
+      } else {
+        console.log("ログアウト");
+      }
+    });
   },
 
   computed: {

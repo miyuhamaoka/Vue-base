@@ -17,7 +17,7 @@
       </div>
       <div>合計金額:{{ totalPrice }}円</div>
 
-     <router-link to="/pages/order" class="btn">注文に進む</router-link>
+      <router-link to="/pages/order" class="btn">注文に進む</router-link>
 
       <!-- <div v-else-if="cartItems.length === 0">カートに商品がありません</div> -->
     </div>
@@ -32,6 +32,7 @@ export default {
     return {
       cartItems: [],
       total: 0,
+      id: "",
     };
   },
   async created() {
@@ -49,29 +50,30 @@ export default {
     });
     console.log("中身:", this.cartItems);
   },
-  // computed: {
-  //   totalPrice() {
-  //     console.log("金額:", this.cartItems);
+  computed: {
+    totalPrice() {
+      console.log("金額:", this.cartItems);
 
-  //     this.cartItems.map((data) => {
-  //       this.total += data.price;
-  //     });
-  //     return this.total;
-  //   },
-  // },
+      this.cartItems.map((data) => {
+        this.total += data.price;
+      });
+      return this.total;
+    },
+  },
 
-  // mounted() {
-  //   this.getCart();
-  // },
-  // methods: {
-  //   async getCart() {
-  //     console.log("ゲットかーと");
-  //     const cartRef = firebase.firestore().collection("cartItems");
-  //     const snapshot = await cartRef.get()
-  //     console.log("スナップショット:",snapshot);
+  mounted() {
+    this.getCart();
+  },
+  methods: {
+    async getCart() {
+      console.log("ゲットかーと");
+      const cartRef = firebase.firestore().collection("cartItems");
+      const snapshot = await cartRef.get();
+      console.log("スナップショット:", snapshot);
+    },
+    // 合計金額
 
-  //   },
-  // },
+  },
 };
 </script>
 
