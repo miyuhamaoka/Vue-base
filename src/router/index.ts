@@ -3,7 +3,10 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import ItemsTop from "../views/WelcomeCoffee.vue";
 import ItemDetails from "../views/pages/itemDetails.vue";
 import Cart from "../views/pages/cart.vue";
+import Order from "../views/pages/order.vue";
+import Thankyou from "../views/pages/thankyou.vue";
 import Login from "../views/users/login.vue";
+import Logout from "../views/users/logout.vue";
 import Register_new from "../views/users/register_new.vue";
 
 
@@ -27,6 +30,11 @@ const routes = [
     //   import(/* webpackChunkName: "about" */ "../views/pages/cart.vue"),
   },
   {
+    path: "/pages/order",
+    name: "order",
+    component: Order
+  },
+  {
     path: "/users/register_new",
     name: "register_new",
     component: Register_new,
@@ -41,9 +49,14 @@ const routes = [
   {
     path: "/users/logout",
     name: "logout",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/users/logout.vue"),
+    component: Logout
   },
+  {
+    path: "/pages/thankyou",
+    name: "thankyou",
+    component: Thankyou
+  },
+
   // {
   //   path: "/pages/details/:id",
   //   name: "details",
