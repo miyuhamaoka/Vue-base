@@ -72,7 +72,6 @@ export default {
       console.log("スナップショット:", snapshot);
     },
     // 合計金額
-
   },
 };
 </script>
